@@ -1,0 +1,16 @@
+html{
+    background-image: url('background.jpeg');
+    color: white;
+    text-align: center;
+}
+h2{
+    font-size: 48px;
+    font-family: Impact, Charcoal, sans-serif;
+}
+.anecdote{
+    padding: 1em;
+    font-size: 100px;
+}
+.vote{
+    font-size: 60px;
+}
