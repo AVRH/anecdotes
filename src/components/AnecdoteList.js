@@ -1,21 +1,29 @@
 import React from 'react';
 import { vote } from '../reducers/anecdoteReducer'
+import { changeNotification, removeNotification} from '../reducers/notificationReducer'
 
 const AnecdoteList = ({store}) => {
 
-  const anecdotes = store.getState().anecdotes
+  const {anecdotes, filter} = store.getState()
 
   const voteAnecdote = (id) => {
         store.dispatch(vote(id))
+        const voteAnecdote = anecdotes.find( a => a.id === id)
+        store.dispatch(changeNotification(`You voted: ${voteAnecdote.content} !`))
+        setTimeout(() => {
+          store.dispatch(removeNotification())
+        }, 5000)
       }
-  const sort = (list) => {
+  const sortAndFilter = (list) => {
     list.sort(function(a,b) {return a.votes < b.votes})
+    list = list.filter(a=> a.content.toLowerCase().includes(filter.toLowerCase()))
+    
     return list
     }
 
   return(
     <div>
-    {sort(anecdotes).map(anecdote =>
+    {sortAndFilter(anecdotes).map(anecdote =>
         <div key={anecdote.id} >
           <div className='anecdote'>
             {anecdote.content}
