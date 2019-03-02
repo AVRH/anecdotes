@@ -6,23 +6,18 @@ import { connect } from 'react-redux'
 const AnecdoteList = (props) => {
 
   const voteAnecdote = (id) => {
-        vote(id)
+        props.vote(id)
         const voteAnecdote = props.anecdotes.find( a => a.id === id)
-        changeNotification(`You voted: ${voteAnecdote.content} !`)
+        props.changeNotification(`You voted: ${voteAnecdote.content} !`)
         setTimeout(() => {
-          removeNotification()
+          props.removeNotification()
         }, 5000)
       }
-  const sortAndFilter = (list) => {
-    list.sort(function(a,b) {return a.votes < b.votes})
-    list = list.filter(a=> a.content.toLowerCase().includes(props.filter.toLowerCase()))
-    
-    return list
-    }
+  
 
   return(
     <div>
-    {sortAndFilter(props.anecdotes).map(anecdote =>
+    {props.anecdotesToShow.map(anecdote =>
         <div key={anecdote.id} >
           <div className='anecdote'>
             {anecdote.content}
@@ -36,10 +31,17 @@ const AnecdoteList = (props) => {
     </div>
   )
 }
+
+const sortAndFilter = ({anecdotes, filter}) => {
+  anecdotes.sort(function(a,b) {return a.votes < b.votes})
+  anecdotes = anecdotes.filter(a=> a.content.toLowerCase().includes(filter.toLowerCase()))
+  
+  return anecdotes
+}
+
 const mapStateToProps = (state) => {
   return({
-    anecdotes: state.anecdotes,
-    filter: state.filter
+    anecdotesToShow: sortAndFilter(state)
   })
 }
 
