@@ -1,5 +1,13 @@
-const notification = 'This is a notification'
+const notification = ''
 
+export const setNotification = (notification, time) => {
+  return dispatch => {
+    dispatch(changeNotification(notification))
+    setTimeout(() => {
+      dispatch(removeNotification())
+    }, time)
+  }
+}
 export const changeNotification = (notification) => {
   return({
     type: 'CHANGE',
@@ -20,7 +28,7 @@ const reducer = (state = notification, action ) => {
         case 'REMOVE':
           return ''
         default:
-          return null
+          return state
     }
 }
 
